@@ -47,7 +47,8 @@ export const getAllUser = async (req, res) => {
             select : { //It's Give all about counting user post
                 _count : {
                     select : {
-                        post : true
+                        post : true,
+                        Comment : true
                     }
                 }
             }

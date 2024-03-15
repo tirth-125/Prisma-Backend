@@ -21,7 +21,24 @@ export const createPost = async (req, res) => {
 
 export const getAllPost = async (req, res) => {
     try {
-        const posts = await prisma.post.findMany({});
+        const posts = await prisma.post.findMany({
+            include: {
+                Comment: {
+                    include: {
+                        // user :true // So it's give Which user comment on this post and define the user
+                        user: {
+                            select: {
+                                name: true
+                            }
+                        }
+                    }
+                }
+            },
+            orderBy : {
+                id:'asc'
+            }
+        });
+
         return res.status(200).json({
             success: true,
             length: posts.length,
@@ -70,9 +87,9 @@ export const postUpdate = async (req, res) => {
                 id: Number(postId)
             },
             data: {
-                user_id : Number(user_id), 
+                user_id: Number(user_id),
                 title,
-                description 
+                description
             }
         });
         // console.log(updateduser, "=");
